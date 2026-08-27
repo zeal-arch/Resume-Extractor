@@ -1,0 +1,231 @@
+:root {
+    --bg-color: #ffffff;
+    --text-main: #000000;
+    --text-muted: #555555;
+    --border-color: #cccccc;
+    --bg-secondary: #f0f0f0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-weight: normal !important;
+    /* Force no bold anywhere */
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 13px;
+    /* Small font size */
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 2rem;
+}
+
+header {
+    text-align: left;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.assignment-label {
+    color: var(--text-muted);
+    font-size: 30px;
+    margin-bottom: 0.5rem;
+}
+
+header h1 {
+    font-size: 20px;
+    margin-bottom: 0.25rem;
+    color: var(--text-main);
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 20px;
+}
+
+/* --- Panels --- */
+.panel {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Drop Zone --- */
+.drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--border-color);
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--bg-secondary);
+}
+
+.drop-zone p {
+    margin-bottom: 0.5rem;
+}
+
+.text-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.supported-formats {
+    display: block;
+    margin-top: 1rem;
+    color: var(--text-muted);
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-main);
+}
+
+/* --- Loading & Error --- */
+#loading-state,
+.error-panel {
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+#error-message {
+    margin-bottom: 1rem;
+}
+
+/* --- Results Area --- */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.results-header h2 {
+    font-size: 14px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.result-card {
+    padding: 1rem;
+    background-color: var(--bg-color);
+}
+
+.card-header {
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    border-bottom: 1px dotted var(--border-color);
+    padding-bottom: 0.25rem;
+}
+
+.card-header h3 {
+    font-size: 12px;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Typography in cards */
+.candidate-name {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+}
+
+.contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    display: inline-block;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 2px 6px;
+    font-size: 11px;
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+/* Skills */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.skill-badge {
+    background: var(--bg-secondary);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 2px 6px;
+    font-size: 11px;
+}
+
+/* Timelines */
+.timeline {
+    list-style: square;
+    padding-left: 1rem;
+}
+
+.timeline li {
+    margin-bottom: 0.5rem;
+}
+
+.item-title {
+    color: var(--text-main);
+}
+
+.item-subtitle {
+    color: var(--text-muted);
+}
+
+/* JSON Code */
+pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    white-space: pre-wrap;       /* wrap long lines */
+    word-wrap: break-word;
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-main);
+}
+
+/* Utils */
+.hidden {
+    display: none !important;
+}

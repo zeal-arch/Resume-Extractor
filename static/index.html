@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume AI - Smart Extraction</title>
+    <!-- Basic sans-serif font -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <p class="assignment-label">Assignment: Resume Information Extraction System</p>
+            <h1>resume extraction</h1>
+            <p>upload a pdf or docx to extract data.</p>
+        </header>
+
+        <!-- Upload Area -->
+        <div id="upload-card" class="panel">
+            <input type="file" id="file-input" accept=".pdf, .docx" hidden>
+            <div id="drop-zone" class="drop-zone">
+                <p>drag & drop your resume here</p>
+                <p>or <button id="browse-btn" class="text-btn">browse files</button></p>
+                <span class="supported-formats">supported: pdf, docx</span>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="hidden">
+            <p>extracting...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden panel error-panel">
+            <p id="error-message">error occurred.</p>
+            <button id="try-again-btn" class="btn secondary">try again</button>
+        </div>
+
+        <!-- Results Area -->
+        <div id="results-area" class="hidden">
+            <div class="results-header">
+                <h2>extracted information</h2>
+                <button id="reset-btn" class="btn secondary">upload another</button>
+            </div>
+            
+            <div class="results-grid">
+                <!-- Contact Card -->
+                <div class="panel result-card">
+                    <div class="card-header">
+                        <h3>candidate details</h3>
+                    </div>
+                    <div class="card-body">
+                        <p id="res-name" class="candidate-name">--</p>
+                        <div class="contact-links">
+                            <a id="res-email" href="#" class="tag email-tag hidden"><span></span></a>
+                            <a id="res-phone" href="#" class="tag phone-tag hidden"><span></span></a>
+                            <a id="res-linkedin" href="#" target="_blank" class="tag social-tag hidden"><span>linkedin</span></a>
+                            <a id="res-github" href="#" target="_blank" class="tag social-tag hidden"><span>github</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Card -->
+                <div class="panel result-card">
+                    <div class="card-header">
+                        <h3>technical skills</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="res-skills" class="skills-container">
+                            <p class="empty-state">no skills detected.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Card -->
+                <div class="panel result-card full-width">
+                    <div class="card-header">
+                        <h3>work experience</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul id="res-experience" class="timeline">
+                            <p class="empty-state">no experience entries detected.</p>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education Card -->
+                <div class="panel result-card full-width">
+                    <div class="card-header">
+                        <h3>education</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul id="res-education" class="timeline">
+                            <p class="empty-state">no education entries detected.</p>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Raw JSON Card -->
+                <div class="panel result-card full-width">
+                     <div class="card-header">
+                        <h3>raw json</h3>
+                    </div>
+                    <div class="card-body">
+                        <pre><code id="res-json"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/static/script.js"></script>
+</body>
+</html>

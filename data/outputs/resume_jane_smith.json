@@ -1,0 +1,27 @@
+{
+    "name": "Num Py",
+    "email": "janesmith99@yahoo.com",
+    "phone": "+91 9876543210",
+    "skills": [
+        "Data Analysis",
+        "Data Science",
+        "Pandas",
+        "R",
+        "Scikit-Learn",
+        "Sql"
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Science in Data Science"
+        },
+        {
+            "institution": "University of California, Berkeley"
+        }
+    ],
+    "experience": [
+        "Data Analyst Intern",
+        "June 2021 - August 2021"
+    ],
+    "linkedin": null,
+    "github": "https://github.com/janesmith-dev"
+}

@@ -1,0 +1,34 @@
+{
+    "name": "John Doe",
+    "email": "john.doe@email.com",
+    "phone": "+1 123-456-7890",
+    "skills": [
+        "Aws",
+        "Django",
+        "Docker",
+        "Java",
+        "Kubernetes",
+        "Machine Learning",
+        "Microservices",
+        "Python",
+        "React",
+        "Sql"
+    ],
+    "education": [
+        {
+            "degree": "M.S. in Computer Science"
+        },
+        {
+            "institution": "Stanford University, 2017"
+        },
+        {
+            "degree": "B.Tech in Information Technology"
+        }
+    ],
+    "experience": [
+        "Senior Software Engineer - Tech Innovators Inc. (2020 - Present)",
+        "Software Developer - Web Solutions LLC (2017 - 2020)"
+    ],
+    "linkedin": "https://linkedin.com/in/johndoe",
+    "github": "https://github.com/johndoe123"
+}

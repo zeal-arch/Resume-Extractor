@@ -1,0 +1,29 @@
+{
+    "name": "Alex Johnson",
+    "email": "alex.johnson@example.co.uk",
+    "phone": null,
+    "skills": [
+        "Express",
+        "Graphql",
+        "Javascript",
+        "Mongodb",
+        "Node.Js",
+        "Redis",
+        "Typescript",
+        "Vue"
+    ],
+    "education": [
+        {
+            "degree": "B.Sc Computer Engineering"
+        },
+        {
+            "institution": "Imperial College London (2015 - 2019)"
+        }
+    ],
+    "experience": [
+        "Backend Developer | CloudNet",
+        "2019 - 2023"
+    ],
+    "linkedin": "https://www.linkedin.com/in/alexj",
+    "github": null
+}
