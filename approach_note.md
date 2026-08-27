@@ -2,7 +2,7 @@
 
 ## Approach
 
-The system was built without relying on external LLMs or Generative AI APIs, strictly adhering to the assignment requirements. The architecture relies on robust geometric parsing combined with established Natural Language Processing (NLP) heuristics:
+The system was deliberately designed to run entirely locally without relying on external LLMs or Generative AI APIs, ensuring maximum data privacy and low latency. The architecture relies on robust geometric parsing combined with established Natural Language Processing (NLP) heuristics:
 
 1. **Layout-Aware Text Extraction (PyMuPDF)**
    Standard PDF extractors (like `pypdf`) suffer from the "word salad" problem on multi-column resumes, scrambling text from left and right sidebars together. We utilized `PyMuPDF` to extract text blocks along with their `(x0, y0, x1, y1)` geometric bounding boxes. By detecting large vertical white-space gaps (`gap_ratio > 0.05`), the parser automatically groups text into visual columns before interleaving full-width headers. This preserves the intended reading order.

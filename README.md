@@ -1,8 +1,6 @@
 # Resume Information Extraction System
 
-**Assignment: Resume Information Extraction System**
-
-A rule-based, NLP-assisted system for extracting structured data from PDF and DOCX resumes — no LLMs, no external APIs.
+A rule-based, NLP-assisted system for extracting structured data from PDF and DOCX resumes without relying on external LLMs or APIs.
 
 ---
 
