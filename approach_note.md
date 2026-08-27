@@ -2,29 +2,41 @@
 
 ## Approach
 
-The system was built without relying on external LLMs or Generative AI APIs, strictly adhering to the assignment requirements. The approach leverages traditional Natural Language Processing (NLP) and rule-based techniques:
+The system was built without relying on external LLMs or Generative AI APIs, strictly adhering to the assignment requirements. The architecture relies on robust geometric parsing combined with established Natural Language Processing (NLP) heuristics:
 
-1.  **Text Extraction**: We utilize `pypdf` for parsing PDF documents and `docx2txt` for DOCX files. These are robust, standard libraries for basic text extraction.
-2.  **Regular Expressions (Regex)**: For highly structured data, regex is the most reliable approach. We use carefully crafted regex patterns to extract:
-    *   Email Addresses
-    *   Phone Numbers (handling various local and international formats)
-    *   LinkedIn Profile URLs
-    *   GitHub Profile URLs
-3.  **Named Entity Recognition (NER)**: We use the `spaCy` library with its pre-trained small English model (`en_core_web_sm`). To extract the candidate's name, we scan the first few lines of the resume for entities classified as `PERSON`. Since resumes typically start with the candidate's name, this heuristic improves accuracy over scanning the entire document where references or author names might be falsely flagged.
-4.  **Keyword Matching (Skills)**: We define a comprehensive dictionary of technical skills. The system tokenizes the resume text and performs word-boundary matching (via Regex) against this dictionary to extract relevant skills.
-5.  **Heuristic Rule-Based Parsing (Education & Experience)**:
-    *   The system scans the text for common section headers (e.g., "Education", "Work Experience", "Academic Background").
-    *   Once inside a section, it applies secondary heuristics (e.g., looking for degree acronyms like "B.Tech", or university names for Education, and date patterns or string lengths for Experience) to isolate the relevant lines.
+1. **Layout-Aware Text Extraction (PyMuPDF)**
+   Standard PDF extractors (like `pypdf`) suffer from the "word salad" problem on multi-column resumes, scrambling text from left and right sidebars together. We utilized `PyMuPDF` to extract text blocks along with their `(x0, y0, x1, y1)` geometric bounding boxes. By detecting large vertical white-space gaps (`gap_ratio > 0.05`), the parser automatically groups text into visual columns before interleaving full-width headers. This preserves the intended reading order.
+
+2. **Phone Validation via Global Telecom Rules (`phonenumbers`)**
+   International phone numbers vary wildly, making pure regex prone to false positives (e.g. matching date ranges like `01/2012 - 04/2019`). We utilized Google's `phonenumbers` library, which relies on a massive offline XML database of global telecom rules to validate and standardize extracted numbers to the E.164 format.
+
+3. **Multi-Pass Name Heuristics & NER (`spaCy`)**
+   Extracting names without an LLM is challenging due to layout variations. We implemented a 4-pass system:
+   * **Pass 1 & 2:** Scans the top 10 (and then top 50) lines for sequences of 2-4 words that start with uppercase letters and do not contain digits, possessives (e.g. "IBM's"), or match our vocabulary of job titles and section headers.
+   * **Pass 3:** If heuristic scanning fails, we fallback to local NER using `spaCy`'s `en_core_web_sm` model to detect `PERSON` entities in the top 50 lines.
+   * **Pass 4:** A final fallback for single-word names (sometimes caused by unicode icon parsing errors).
+
+4. **Vocabulary Intersection (Skills)**
+   Rather than attempting to guess skills semantically, we rely on a comprehensive, hand-curated vocabulary list (`_TECH_SKILLS`). The text is tokenized, stripped of punctuation, and intersected with our dictionary. This guarantees 0% hallucination for technical skills.
+
+5. **RFC-Practical Email Regex & Annotation Scanning**
+   We extract emails using a robust regex pattern that explicitly prevents consecutive dots or leading dots (common OCR errors) while supporting multi-level domains. Additionally, the system parses hidden `mailto:` URIs from PDF metadata to catch emails hidden behind clickable buttons (e.g. "Contact Me").
+
+---
 
 ## Assumptions
 
-1.  **Standard Layouts**: The resumes follow a somewhat standard vertical layout where text flows from top to bottom. Multi-column resumes might result in text extraction where logical blocks are interwoven, which can confuse heuristic parsers.
-2.  **English Language**: The parser assumes the resume is written in English, primarily because the `spaCy` model used and the skill/header dictionaries are in English.
-3.  **Skill Dictionary Completeness**: The extracted skills are limited to the ones defined in our internal `TECH_SKILLS` dictionary. While comprehensive for common tech roles, very niche or brand-new technologies might be missed if not present in the list.
+1. **English Language**: The parser assumes the resume is written in English. Our rejection dictionaries (`_JOB_TITLE_WORDS`), section headers, and `spaCy` NER model are English-specific.
+2. **Skill Dictionary**: We assume the target extraction fields are primarily software/tech related. Our dictionary is heavily biased towards languages, frameworks, and cloud infrastructure.
+3. **Layout Predictability**: We assume the candidate's name is located somewhere in the top 50 lines of the parsed text flow. 
+
+---
 
 ## Limitations
 
-1.  **Complex Formatting**: Rule-based parsers struggle with complex PDF formats, tables, and unconventional designs. Information embedded in images or complex multi-column layouts might not be extracted correctly by `pypdf`.
-2.  **Rigid Section Headers**: If a candidate uses highly creative or unusual section headers (e.g., "My Journey So Far" instead of "Experience"), the heuristic parser will fail to identify the section and might miss the experience data.
-3.  **Entity Resolution Ambiguity**: `spaCy`'s pre-trained `PERSON` entity recognizer is not perfect and can sometimes misclassify company names, locations, or uncommon names, especially when devoid of typical sentence context (which is common in resumes).
-4.  **Context Understanding**: Unlike LLMs, this system does not *understand* context. It extracts lines based on rules. For example, it might extract a sentence containing the word "Python" as a skill, but it won't know if the context was "I hate Python" versus "Expert in Python". (Though word matching mitigates this by just listing the skill).
+1. **Scanned Documents (Images)**
+   If a PDF is a scanned image or rasterized flat file (e.g., JPEG converted to PDF), the system will return `null` for most fields. OCR (Optical Character Recognition) was intentionally omitted to keep dependencies lightweight and processing time under 100ms per resume.
+2. **Non-Standard Headers**
+   If a candidate uses highly creative or unusual section headers (e.g., "My Journey So Far" instead of "Experience"), the heuristic parser will fail to trigger the block extraction boundaries, causing that section to be missed.
+3. **Extremely Complex Vector Graphics**
+   Some designer resumes build text using individual vector glyphs rather than continuous text blocks. While `PyMuPDF` handles bounding boxes well, scattered individual letters cannot always be stitched back together cohesively.
